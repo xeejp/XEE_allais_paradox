@@ -7,6 +7,7 @@ import Divider from 'material-ui/Divider'
 
 import PageButtons from './PageButtons'
 import EditQuestion from './EditQuestion'
+import DownloadButton from './DownloadButton'
 import Users from './Users'
 
 import Chart from 'components/Chart'
@@ -51,6 +52,7 @@ class App extends Component {
           <Users /><br />
          <Chart oneone={ans[0][0]} onetwo={ans[0][1]} twoone={ans[1][0]} twotwo={ans[1][1]} expanded={false} /><br />
           <EditQuestion />
+          <DownloadButton style={{marginLeft: '2%'}} disabled={page != "result"} />
         </div>
       )
     }
