@@ -2,7 +2,7 @@ defmodule AllaisParadox.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :allais_paradox,
+    [app: :xee_allais_paradox,
      version: "0.1.0",
      build_path: "../../_build",
      config_path: "../../config/config.exs",
