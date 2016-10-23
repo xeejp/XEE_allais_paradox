@@ -41,14 +41,14 @@ class App extends Component {
     }
     if (loading) {
       return (
-	<Card>
-		<CardTitle title="接続中" />
-		<CardText>
-    　　　		<p>サーバーに接続しています。<br/>このまましばらくお待ちください。</p>
+	<Card style={{padding: '20px'}}>
+		<CardTitle title="接続中" style={{padding: '0px', marginTop: '7px', marginBottom: '14px'}}/>
+		<CardText style={{padding: '0px', margin: '0px'}}>
+			<div style={{textAlign: 'center'}}>
+				<CircularProgress style={{margin: '0px', padding: '0px' }} />
+			</div>
+    　　　		<p style={{margin: '0px', padding: '0px'}}>サーバーに接続しています。<br/>このまましばらくお待ちください。</p>
 		</CardText>
-		<div style={{textAlign: "center"}}>
-			<CircularProgress size={2}/>
-		</div>
 	</Card>
       )
     } else {

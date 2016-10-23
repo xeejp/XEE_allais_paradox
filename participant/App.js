@@ -1,6 +1,9 @@
 ﻿import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import {Card, CardText, CardTitle } from 'material-ui/Card'
+import CircularProgress from 'material-ui/CircularProgress'
+
 import { fetchContents } from './actions'
 
 import Pages from './Pages'
@@ -24,7 +27,17 @@ class App extends Component {
   render() {
     const { loading, active } = this.props
     if (loading) {
-      return <p>ロード中です。</p>
+      return (
+	<Card style={{padding: '20px'}}>
+		<CardTitle title="接続中" style={{padding: '0px', marginTop: '7px', marginBottom: '14px'}}/>
+		<CardText style={{padding: '0px', margin: '0px'}}>
+			<div style={{textAlign: 'center'}}>
+				<CircularProgress style={{margin: '0px', padding: '0px' }} />
+			</div>
+    　　　		<p style={{margin: '0px', padding: '0px'}}>サーバーに接続しています。<br/>このまましばらくお待ちください。</p>
+		</CardText>
+	</Card>
+      )
     } else if(active) {
       return (
         <div>
