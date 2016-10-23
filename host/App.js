@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { fetchContents } from './actions'
 
 import Divider from 'material-ui/Divider'
+import {Card, CardText, CardTitle } from 'material-ui/Card'
+import CircularProgress from 'material-ui/CircularProgress'
 
 import PageButtons from './PageButtons'
 import EditQuestion from './EditQuestion'
@@ -38,7 +40,17 @@ class App extends Component {
       }
     }
     if (loading) {
-      return <p>ロード中です。</p>
+      return (
+	<Card>
+		<CardTitle title="接続中" />
+		<CardText>
+    　　　		<p>サーバーに接続しています。<br/>このまましばらくお待ちください。</p>
+		</CardText>
+		<div style={{textAlign: "center"}}>
+			<CircularProgress size={2}/>
+		</div>
+	</Card>
+      )
     } else {
       return (
         <div>
