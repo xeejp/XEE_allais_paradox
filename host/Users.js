@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const UsersList = ({participants, page, openParticipantPage }) => (
   <table>
-    <thead><tr><th>id</th><th>status</th></tr></thead>
+    <thead><tr><th>id</th><th>状態</th></tr></thead>
     <tbody>
       {
         Object.keys(participants).map(id => (
@@ -57,4 +57,4 @@ const Users = ({ participants, page, openParticipantPage }) => (
   </div>
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(throttle(Users, 200))
+export default connect(mapStateToProps, mapDispatchToProps)(throttle(Users, 500))
