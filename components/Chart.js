@@ -115,4 +115,4 @@ class Chart extends Component {
   }
 }
 
-export default connect(mapStateToProps)(throttle(Chart, 200))
+export default connect(mapStateToProps)(throttle(Chart, 500))
