@@ -8,6 +8,7 @@ import {Card, CardText, CardTitle } from 'material-ui/Card'
 import CircularProgress from 'material-ui/CircularProgress'
 
 import PageButtons from './PageButtons'
+import Config from './Config.js'
 import EditQuestion from './EditQuestion'
 import DownloadButton from './DownloadButton'
 import Users from './Users'
@@ -63,6 +64,7 @@ class App extends Component {
           />
           <Users /><br />
          <Chart oneone={ans[0][0]} onetwo={ans[0][1]} twoone={ans[1][0]} twotwo={ans[1][1]} expanded={false} /><br />
+          <Config />
           <EditQuestion />
           <DownloadButton style={{marginLeft: '2%'}} disabled={page != "result"} />
         </div>

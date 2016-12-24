@@ -257,7 +257,7 @@ class EditQuestion extends Component {
       />,
     ]
     return (<span>
-      <FloatingActionButton onClick={this.handleOpen.bind(this)} disabled={page != "waiting"}>
+      <FloatingActionButton style={{marginLeft: "2%"}} onClick={this.handleOpen.bind(this)} disabled={page != "waiting"}>
          <ImageEdit />
       </FloatingActionButton>
       <Dialog
