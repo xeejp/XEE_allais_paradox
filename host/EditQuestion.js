@@ -11,6 +11,8 @@ import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 import Snackbar from 'material-ui/Snackbar'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 import { updateQuestion, fetchContents } from './actions'
 
 const mapStateToProps = ({ question_text, page }) => ({
@@ -21,39 +23,20 @@ class EditQuestion extends Component {
   constructor(props){
     super(props)
     const { question_text } = this.props
+    var default_text = question_text
+    if(!question_text) {
+      default_text = ReadJSON()
+      const { dispatch } = this.props
+      dispatch(updateQuestion(default_text))
+    }
     this.state = {
-      question_text: question_text,
+      question_text: default_text,
       open: false,
       snack: false,
       message: "設定を送信しました。",
       slideIndex: 0,
       mainSlideIndex: 0,
-      default_text: {
-        'question': {
-          text: "つぎの2つの選択肢のうち、あなたの好む方を選んでください。",
-        },
-        'question1': {
-          text: "どちらかの選択肢を選んでください。",
-          title: ["オプションA", "オプションB"],
-          question: [
-             "確実に100万円を手にする。", 
-            "89％の確率で100万円、10%の確率で250万円を獲得する。ただし、1%の確率で何ももらえない。"
-          ]
-        },
-        'question2': {
-          text: "どちらかの選択肢を選んでください。",
-          title: ["オプションA", "オプションB"],
-          question: [
-            "11%の確率で100万円を得る。",
-            "10%の確率で250万円を得る。"
-          ]
-        },
-        'answered': {
-          text: "あなたの回答は終了しました。他の参加者の回答が終了するまでこのままお待ちください。",
-        },
-        'waiting_text': "参加者の登録を待っています。\nこの画面のまましばらくお待ちください。",
-        'description_text': "これから、2つの質問をします。\n選択肢のうち、あなたが最も好むものを選択してください。",
-      }
+      default_text: ReadJSON(),
     }
   }
 

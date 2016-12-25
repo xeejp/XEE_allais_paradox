@@ -20,6 +20,7 @@ class Chart extends Component {
 
   render() {
     const { oneone, onetwo, twoone, twotwo, question_text } = this.props
+    if(question_text == null) return null
     return (
     <Card
       expanded={this.state.expanded}
