@@ -9,6 +9,8 @@ import { submitPage, nextPage, backPage } from './actions'
 
 import { getPage } from 'util/index'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 const pages = ["waiting", "description", "experiment", "result"]
 
 const mapStateToProps = ({ page, joined, answered, participants }) => ({
@@ -52,8 +54,8 @@ class PageButtons extends Component {
         <Stepper activeStep={pages.indexOf(page)} linear={false}>
           {buttons}
         </Stepper>
-        <FlatButton onClick={this.backPage.bind(this)} style={{ marginLeft: '3%' }} disabled={page == "waiting"}>戻る</FlatButton>
-        <RaisedButton onClick={this.nextPage.bind(this)} primary={true} style={{ marginLeft: '3%' }}>次へ</RaisedButton>
+        <FlatButton onClick={this.backPage.bind(this)} style={{ marginLeft: '3%' }} disabled={page == "waiting"}>{ReadJSON().static_text["back"]}</FlatButton>
+        <RaisedButton onClick={this.nextPage.bind(this)} primary={true} style={{ marginLeft: '3%' }}>{ReadJSON().static_text["next"]}</RaisedButton>
       </span>
     )
   }

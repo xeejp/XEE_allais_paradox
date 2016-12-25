@@ -4,6 +4,7 @@ import throttle from 'react-throttle-render'
 
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import Highcharts from 'react-highcharts'
+import { ReadJSON } from '../util/ReadJSON'
 
 const mapStateToProps = ({ question_text }) => ({ question_text })
 
@@ -21,13 +22,15 @@ class Chart extends Component {
   render() {
     const { oneone, onetwo, twoone, twotwo, question_text } = this.props
     if(question_text == null) return null
+    var text = ReadJSON().static_text["result"]
+
     return (
     <Card
       expanded={this.state.expanded}
       onExpandChange={this.handleExpandChange.bind(this)}
     >
       <CardHeader
-        title={"実験結果"}
+        title={text["title"]}
         actAsExpander={true}
         showExpandableButton={true}
       />
@@ -43,13 +46,13 @@ class Chart extends Component {
                     enabled: false,
                   },
                   title: {
-                    text: 'はじめの質問で' + question_text["question1"].title[0] + 'を選んだ人'
+                    text: text["graph_title"][0][0] + question_text["question1"].title[0] + text["graph_title"][0][1]
                   },
                   plotOptions: {
                       pie: {
                           dataLabels: {
                               distance: -30,
-                              format: '{point.y:.0f}人'
+                              format: '{point.y:.0f}' + ReadJSON().static_text["person_unit"]
                           },
                           showInLegend: true
                      }
@@ -57,20 +60,20 @@ class Chart extends Component {
 
                   tooltip: {
                     headerFormat: '<span>{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}人</b><br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}' + ReadJSON().static_text["person_unit"] + '</b><br/>'
                   },
                   series: [{
-                    name: '回答',
+                    name: text["answer"],
                     colorByPoint: true,
                     data: [{
-                      name: '次の質問で' + question_text["question2"].title[0] + 'を選んだ人',
+                      name: text["graph_title"][1][0] + question_text["question2"].title[0] + text["graph_title"][1][1],
                       y: oneone,
                     }, {
-                       name: '次の質問で' + question_text["question2"].title[1] + 'を選んだ人',
+                      name: text["graph_title"][1][0] + question_text["question2"].title[1] + text["graph_title"][1][1],
                        y: onetwo,
                     }]
                   }]
-             }} /> : <p>はじめの質問で{question_text["question1"].title[0]}を選んだ人はいませんでした。</p>}
+             }} /> : <p>{text["graph_title"][2][0] + question_text["question1"].title[0] + text["graph_title"][2][1]}</p>}
           {(twoone + twotwo != 0)?
             <Highcharts
               config={{
@@ -81,34 +84,34 @@ class Chart extends Component {
                     enabled: false,
                   },
                   title: {
-                    text: 'はじめの質問で' + question_text["question1"].title[1] + 'を選んだ人'
+                    text: text["graph_title"][0][0] + question_text["question1"].title[1] + text["graph_title"][0][1]
                   },
                   plotOptions: {
                       pie: {
                           dataLabels: {
                               distance: -30,
-                              format: '{point.y:.0f}人'
+                              format: '{point.y:.0f}' + ReadJSON().static_text["person_unit"]
                           },
                           showInLegend: true
                      }
                   },
 
                   tooltip: {
-                     headerFormat: '<span>{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}人</b> <br/>'
+                    headerFormat: '<span>{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}' + ReadJSON().static_text["person_unit"] + '</b><br/>'
                   },
                   series: [{
-                     name: '回答',
-                   colorByPoint: true,
-                   data: [{
-                       name: '次の質問で' + question_text["question2"].title[1] + 'を選んだ人',
+                    name: text["answer"],
+                    colorByPoint: true,
+                    data: [{
+                      name: text["graph_title"][1][0] + question_text["question2"].title[1] + text["graph_title"][1][1],
+                      y: twoone,
+                    }, {
+                      name: text["graph_title"][1][0] + question_text["question2"].title[0] + text["graph_title"][1][1],
                        y: twotwo,
-                      }, {
-                       name: '次の質問で' + question_text["question2"].title[0] + 'を選んだ人',
-                       y: twoone,
-                   }]
+                    }]
                   }]
-             }} /> : <p>はじめの質問で{question_text["question1"].title[1]}を選んだ人はいませんでした。</p>}
+             }} /> : <p>{text["graph_title"][2][0] + question_text["question1"].title[1] + text["graph_title"][2][1]}</p>}
         </span>
       </CardText>
     </Card>
