@@ -1,4 +1,4 @@
-export function ReadJSON(filename = './language.json') {
-  var text = require('json!' + filename)
+export function ReadJSON() {
+  var text = require('json!./language.json')
   return text
 }
