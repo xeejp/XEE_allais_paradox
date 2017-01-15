@@ -1,8 +1,8 @@
 import React from 'react'
+import text from './language.json'
 
 export function ReadJSON() {
-  if(typeof ReadJSON.text === 'undefined') ReadJSON.text = require('json!./language.json')
-  return ReadJSON.text
+  return text
 }
 
 export function LineBreak(text) {
