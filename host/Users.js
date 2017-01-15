@@ -7,6 +7,8 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 
 import { openParticipantPage } from './actions'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 const User = ({ id, status, openParticipantPage }) => (
   <tr><td><a onClick={openParticipantPage(id)}>{id}</a></td><td>{status}</td></tr>
 )
@@ -22,14 +24,14 @@ const mapDispatchToProps = (dispatch) => {
 
 const UsersList = ({participants, page, openParticipantPage }) => (
   <table>
-    <thead><tr><th>id</th><th>状態</th></tr></thead>
+    <thead><tr><th>{ReadJSON().static_text["id"]}</th><th>{ReadJSON().static_text["status"]["title"]}</th></tr></thead>
     <tbody>
       {
         Object.keys(participants).map(id => (
           <User
             key={id}
             id={id}
-            status={(page == "waiting" || !participants[id].active)? "待機中" : (page == "description")? "説明を表示" : (page == "result")? "結果を表示" : {"question1": "1問目に回答中", "question2": "2問目に回答中", "answered": "回答済み"}[participants[id].sequence]}
+            status={(page == "waiting" || !participants[id].active)? ReadJSON().static_text["status"]["text"][0] : (page == "description")? ReadJSON().static_text["status"]["text"][1] : (page == "result")? ReadJSON().static_text["status"]["text"][2] : ReadJSON().static_text["status"]["text"][3][participants[id].sequence]}
             openParticipantPage={openParticipantPage}
           />
         ))
@@ -42,7 +44,7 @@ const Users = ({ participants, page, openParticipantPage }) => (
   <div>
     <Card>
       <CardHeader
-        title={"登録者 " + Object.keys(participants).length + "人"}
+        title={ReadJSON().static_text["people"] + " " + Object.keys(participants).length + ReadJSON().static_text["person_unit"]}
         actAsExpander={true}
         showExpandableButton={true}
       />

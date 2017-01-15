@@ -11,6 +11,8 @@ import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 import Snackbar from 'material-ui/Snackbar'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 import { updateQuestion, fetchContents } from './actions'
 
 const mapStateToProps = ({ question_text, page }) => ({
@@ -21,39 +23,22 @@ class EditQuestion extends Component {
   constructor(props){
     super(props)
     const { question_text } = this.props
+    var default_text = question_text
+    var static_text = ReadJSON().static_text
+    if(!question_text) {
+      default_text = ReadJSON().dynamic_text
+      const { dispatch } = this.props
+      dispatch(updateQuestion(default_text))
+    }
     this.state = {
-      question_text: question_text,
+      static_text: static_text,
+      question_text: default_text,
       open: false,
       snack: false,
-      message: "設定を送信しました。",
+      message: static_text["send_message"],
       slideIndex: 0,
       mainSlideIndex: 0,
-      default_text: {
-        'question': {
-          text: "つぎの2つの選択肢のうち、あなたの好む方を選んでください。",
-        },
-        'question1': {
-          text: "どちらかの選択肢を選んでください。",
-          title: ["オプションA", "オプションB"],
-          question: [
-             "確実に100万円を手にする。", 
-            "89％の確率で100万円、10%の確率で250万円を獲得する。ただし、1%の確率で何ももらえない。"
-          ]
-        },
-        'question2': {
-          text: "どちらかの選択肢を選んでください。",
-          title: ["オプションA", "オプションB"],
-          question: [
-            "11%の確率で100万円を得る。",
-            "10%の確率で250万円を得る。"
-          ]
-        },
-        'answered': {
-          text: "あなたの回答は終了しました。他の参加者の回答が終了するまでこのままお待ちください。",
-        },
-        'waiting_text': "参加者の登録を待っています。\nこの画面のまましばらくお待ちください。",
-        'description_text': "これから、2つの質問をします。\n選択肢のうち、あなたが最も好むものを選択してください。",
-      }
+      default_text: ReadJSON().dynamic_text,
     }
   }
 
@@ -61,7 +46,7 @@ class EditQuestion extends Component {
     return (
       <div>
         <TextField
-          hintText={"問題の説明"}
+          hintText={this.state.static_text["question_description"]}
           defaultValue={this.state.question_text["question"].text}
           onBlur={this.handleChange.bind(this, ["question", "text"])}
           multiLine={true}
@@ -73,8 +58,8 @@ class EditQuestion extends Component {
           onChange={this.handleSlide.bind(this)}
           value={this.state.slideIndex}
         >
-          <Tab label="1問目" value={0} style={{color: '#000000', background: '#CCCCCC'}} />
-          <Tab label="2問目" value={1} style={{color: '#000000', background: '#CCCCCC'}} />
+          <Tab label={this.state.static_text["questions"][0]} value={0} style={{color: '#000000', background: '#CCCCCC'}} />
+          <Tab label={this.state.static_text["questions"][1]} value={1} style={{color: '#000000', background: '#CCCCCC'}} />
         </Tabs>
         <SwipeableViews
           index={this.state.slideIndex}
@@ -82,7 +67,7 @@ class EditQuestion extends Component {
         >
           <div style={{ marginLeft: "2%", marginRight: "2%"}}>
             <TextField
-              hintText={"1問目の詳細"}
+              hintText={this.state.static_text["question_details"][0]}
               defaultValue={this.state.question_text["question1"].text}
               onBlur={this.handleChange.bind(this, ["question1", "text"])}
               multiLine={true}
@@ -96,7 +81,7 @@ class EditQuestion extends Component {
              onBlur={this.handleChange.bind(this, ["question1", "title", 0])}
            /><br />
            <div style={{marginLeft: "2%"}}><TextField
-              hintText={this.state.default_text["question1"].title[0] + "の詳細"}
+              hintText={this.state.static_text["question_details"][0]}
               defaultValue={this.state.question_text["question1"].question[0]}
               onBlur={this.handleChange.bind(this, ["question1", "question", 0])}
               multiLine={true}
@@ -109,7 +94,7 @@ class EditQuestion extends Component {
              onBlur={this.handleChange.bind(this, ["question1", "title", 1])}
             /><br />
             <div style={{marginLeft: "2%"}}><TextField
-               hintText={this.state.default_text["question1"].title[1] + "の詳細"}
+               hintText={this.state.static_text["question_details"][1]}
                defaultValue={this.state.question_text["question1"].question[1]}
                onBlur={this.handleChange.bind(this, ["question1", "question", 1])}
                multiLine={true}
@@ -120,7 +105,7 @@ class EditQuestion extends Component {
 
           <div style={{ marginLeft: "2%", marginRight: "2%"}}>
             <TextField
-              hintText={"2問目の詳細"}
+              hintText={this.state.static_text["question_details"][1]}
               defaultValue={this.state.question_text["question2"].text}
               onBlur={this.handleChange.bind(this, ["question2", "text"])}
               multiLine={true}
@@ -165,7 +150,7 @@ class EditQuestion extends Component {
     return (
       <div style={{height: '100%', position: 'relative'}}>
         <TextField
-         hintText={"待機画面に表示するテキスト"}
+         hintText={this.state.static_text["waiting_text"]}
          defaultValue={this.state.question_text["waiting_text"]}
          onBlur={this.handleChange.bind(this, ["waiting_text"])}
          multiLine={true}
@@ -221,7 +206,7 @@ class EditQuestion extends Component {
     this.setState({
       open: false,
       snack: true,
-      message: "設定を送信しました。"
+      message: this.state.static_text["send_message"]
     })
     const { dispatch } = this.props
     dispatch(updateQuestion(this.state.question_text))
@@ -232,7 +217,7 @@ class EditQuestion extends Component {
       question_text: this.state.default_text,
       open: false,
       snack: true,
-      message: "設定を初期化しました。"
+      message: this.state.static_text["reset_message"]
     })
     const { dispatch } = this.props
     dispatch(updateQuestion(this.state.default_text))
@@ -242,26 +227,26 @@ class EditQuestion extends Component {
     const { page } = this.props
     const actions = [
       <RaisedButton
-        label="適用"
+        label={this.state.static_text["apply"]}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.submit.bind(this)}
       />,
       <RaisedButton
-        label="キャンセル"
+        label={this.state.static_text["cancel"]}
         onTouchTap={this.handleClose.bind(this)}
       />,
      <RaisedButton
-        label="すべてリセット"
+        label={this.state.static_text["reset"]}
         onTouchTap={this.reset.bind(this)}
       />,
     ]
     return (<span>
-      <FloatingActionButton onClick={this.handleOpen.bind(this)} disabled={page != "waiting"}>
+      <FloatingActionButton style={{marginLeft: "2%"}} onClick={this.handleOpen.bind(this)} disabled={page != "waiting"}>
          <ImageEdit />
       </FloatingActionButton>
       <Dialog
-        title="編集画面"
+        title={this.state.static_text["editor"]}
         actions={actions}
         modal={false}
         open={this.state.open}
@@ -271,8 +256,8 @@ class EditQuestion extends Component {
           onChange={this.handleMainSlide.bind(this)}
           value={this.state.mainSlideIndex}
         >
-          <Tab label="待機画面" value={0}/>
-          <Tab label="問題画面" value={1}/>
+          <Tab label={this.state.static_text["waiting"]} value={0}/>
+          <Tab label={this.state.static_text["question"]} value={1}/>
         </Tabs>
         <SwipeableViews
           index={this.state.mainSlideIndex}
